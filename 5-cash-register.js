@@ -142,46 +142,48 @@ function checkCashRegister(price, cash, cid) {
   while (change != 0) {
     for (let [amountInWords, amount] of Object.entries(moneyValue)) {
       // OPEN
-      if (change >= amount) {
-        if (moneyOnHand[amountInWords] != 0) {
+      let denomAmount = 0;
+      while (change >= amount) {
+        if (moneyOnHand[amountInWords] > 0) {
           change = (change - amount).toFixed(2);
-          console.log(change);
           moneyOnHand[amountInWords] -= amount;
-          break;
+          denomAmount += amount;
         } else {
-          continue;
+          break;
         }
       }
+      if (denomAmount > 0) {
+        changeToGive.push([amountInWords, denomAmount]);
+      }
     }
+    return { status: "OPEN", change: changeToGive };
   }
-
-  return changeToGive;
 }
 
-console.log(
-  checkCashRegister(3.26, 100, [
-    ["PENNY", 1.01],
-    ["NICKEL", 2.05],
-    ["DIME", 3.1],
-    ["QUARTER", 4.25],
-    ["ONE", 90],
-    ["FIVE", 55],
-    ["TEN", 20],
-    ["TWENTY", 60],
-    ["ONE HUNDRED", 100],
-  ])
-);
+// console.log(
+//   checkCashRegister(3.26, 100, [
+//     ["PENNY", 1.01],
+//     ["NICKEL", 2.05],
+//     ["DIME", 3.1],
+//     ["QUARTER", 4.25],
+//     ["ONE", 90],
+//     ["FIVE", 55],
+//     ["TEN", 20],
+//     ["TWENTY", 60],
+//     ["ONE HUNDRED", 100],
+//   ])
+// );
 
 console.log(
   checkCashRegister(19.5, 20, [
-    ["PENNY", 1.01],
-    ["NICKEL", 2.05],
-    ["DIME", 3.1],
-    ["QUARTER", 4.25],
-    ["ONE", 90],
-    ["FIVE", 55],
-    ["TEN", 20],
-    ["TWENTY", 60],
-    ["ONE HUNDRED", 100],
+    ["PENNY", 0.01],
+    ["NICKEL", 0],
+    ["DIME", 0],
+    ["QUARTER", 0],
+    ["ONE", 0],
+    ["FIVE", 0],
+    ["TEN", 0],
+    ["TWENTY", 0],
+    ["ONE HUNDRED", 0],
   ])
 );
